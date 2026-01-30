@@ -29,3 +29,8 @@ class UserResponse(BaseModel):
     created_at:datetime
     class Config:
         orrm_model = True
+        
+class UserLogin(BaseModel):
+    email : EmailStr
+    password:str
+    

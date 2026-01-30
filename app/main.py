@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 # from pydantic import BaseModel,HttpUrl  #for data validation and data model
-from . routers import user,course
+from . routers import user,course,auth
 
 app = FastAPI()
 
@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.include_router(course.router)
 app.include_router(user.router)
-
+app.include_router(auth.router)
 
 
     

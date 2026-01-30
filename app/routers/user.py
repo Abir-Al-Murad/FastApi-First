@@ -5,9 +5,11 @@ from sqlalchemy.orm import Session
 from .. import models,schemas,utils
 from .. database import  get_db
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/users"
+)
 
-@router.post("/users",status_code=status.HTTP_201_CREATED,response_model=schemas.UserResponse)
+@router.post("/",status_code=status.HTTP_201_CREATED,response_model=schemas.UserResponse)
 def create_account(user:schemas.UserCreate,db:Session=Depends(get_db)):
     if db.query(models.User).filter(models.User.email == user.email).first():
         raise HTTPException(400,"Email already exists")

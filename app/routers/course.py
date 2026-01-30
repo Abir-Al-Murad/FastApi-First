@@ -5,7 +5,9 @@ from .. import models,schemas
 from .. database import  get_db
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/course"
+)
 
 
 
@@ -14,7 +16,7 @@ def course(db:Session = Depends(get_db)):
     return {"status":"sqlalchemy ORM working"}
 
 
-@router.post("/courses",response_model= schemas.CourseResponse)
+@router.post("/",response_model= schemas.CourseResponse)
 def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db)):
     # new_course = models.Course(
     #     name = course.name,
@@ -31,14 +33,14 @@ def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db)):
     return new_course
 
 
-@router.get("/courses",response_model= List[schemas.CourseResponse])
+@router.get("/",response_model= List[schemas.CourseResponse])
 def get_course(db: Session = Depends(get_db)):
     course = db.query(models.Course).all()
     return course
 
 
 
-@router.get("/courseNewSystem/{id}",response_model=schemas.CourseResponse)
+@router.get("/{id}",response_model=schemas.CourseResponse)
 def get_course(id:int,db: Session = Depends(get_db)):
     course = db.query(models.Course).filter(models.Course.id == id).first()
     if not course:
@@ -49,7 +51,7 @@ def get_course(id:int,db: Session = Depends(get_db)):
     return course
 
 
-@router.delete("/course/sqlAlchemy/delete/{id}",status_code= status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}",status_code= status.HTTP_204_NO_CONTENT)
 def delete_course_sqlAlchemy(id:int,db:Session = Depends(get_db)):
     course_query = db.query(models.Course).filter(models.Course.id == id)
     course = course_query.first()
@@ -59,7 +61,7 @@ def delete_course_sqlAlchemy(id:int,db:Session = Depends(get_db)):
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-@router.put("/courseNewSystem/{id}",response_model=schemas.CourseResponse)
+@router.put("/{id}",response_model=schemas.CourseResponse)
 def update_course(id:int,updated_course:schemas.CourseCreate,db: Session=Depends(get_db)):
     course_query = db.query(models.Course).filter(models.Course.id == id)
     course = course_query.first()

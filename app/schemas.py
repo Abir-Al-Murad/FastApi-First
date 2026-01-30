@@ -1,5 +1,5 @@
-from pydantic import BaseModel, HttpUrl
-
+from pydantic import BaseModel, HttpUrl, EmailStr
+from datetime import datetime
 
 #define request body schema
 
@@ -18,3 +18,14 @@ class CourseResponse(CourseCreate):
 # class CourseResponse(BaseModel):  #Response e only name and instructor dakhabe
 #     name:str
 #     instructor:str
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+    
+class UserResponse(BaseModel):
+    id:int
+    email:EmailStr
+    created_at:datetime
+    class Config:
+        orrm_model = True

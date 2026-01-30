@@ -3,7 +3,7 @@ from pydantic import BaseModel,HttpUrl  #for data validation and data model
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
-from . import models
+from . import models,utils
 from sqlalchemy.orm import Session
 from . database import engine, get_db
 from . import schemas
@@ -152,6 +152,10 @@ def course(db:Session = Depends(get_db)):
 
 @app.post("/users",status_code=status.HTTP_201_CREATED,response_model=schemas.UserResponse)
 def create_account(user:schemas.UserCreate,db:Session=Depends(get_db)):
+    if db.query(models.User).filter(models.User.email == user.email).first():
+        raise HTTPException(400,"Email already exists")
+    hashed_password = utils.hash_password(user.password)
+    user.password = hashed_password
     new_user = models.User(**user.model_dump())
     db.add(new_user)
     db.commit()

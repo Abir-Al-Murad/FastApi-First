@@ -3,10 +3,10 @@ from datetime import datetime,timedelta,timezone
 from . import schemas
 from jwt.exceptions import InvalidTokenError
 from fastapi import Depends,status,HTTPException
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordBearer
 
 
-oauth2_scheme = OAuth2AuthorizationCodeBearer(tokenUrl='login')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"

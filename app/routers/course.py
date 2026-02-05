@@ -41,8 +41,8 @@ def get_course(db: Session = Depends(get_db),current_user:models.User =Depends(o
 
 
 
-@router.get("/{id}",response_model=schemas.CourseResponse,current_user:models.User =Depends(oauth2.get_current_user))
-def get_course(id:int,db: Session = Depends(get_db)):
+@router.get("/{id}",response_model=schemas.CourseResponse)
+def get_course(id:int,db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
     course = db.query(models.Course).filter(models.Course.id == id).first()
     if not course:
         raise HTTPException(

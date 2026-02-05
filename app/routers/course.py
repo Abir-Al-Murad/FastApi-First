@@ -18,7 +18,7 @@ def course(db:Session = Depends(get_db)):
 
 
 @router.post("/",response_model= schemas.CourseResponse)
-def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),get_current_user:int=Depends(oauth2.get_current_user)):
+def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
     # new_course = models.Course(
     #     name = course.name,
     #     instructor = course.instructor,
@@ -35,13 +35,13 @@ def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),get_
 
 
 @router.get("/",response_model= List[schemas.CourseResponse])
-def get_course(db: Session = Depends(get_db)):
+def get_course(db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
     course = db.query(models.Course).all()
     return course
 
 
 
-@router.get("/{id}",response_model=schemas.CourseResponse)
+@router.get("/{id}",response_model=schemas.CourseResponse,current_user:models.User =Depends(oauth2.get_current_user))
 def get_course(id:int,db: Session = Depends(get_db)):
     course = db.query(models.Course).filter(models.Course.id == id).first()
     if not course:
@@ -53,7 +53,7 @@ def get_course(id:int,db: Session = Depends(get_db)):
 
 
 @router.delete("/{id}",status_code= status.HTTP_204_NO_CONTENT)
-def delete_course_sqlAlchemy(id:int,db:Session = Depends(get_db)):
+def delete_course_sqlAlchemy(id:int,db:Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
     course_query = db.query(models.Course).filter(models.Course.id == id)
     course = course_query.first()
     if not course:
@@ -63,7 +63,7 @@ def delete_course_sqlAlchemy(id:int,db:Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @router.put("/{id}",response_model=schemas.CourseResponse)
-def update_course(id:int,updated_course:schemas.CourseCreate,db: Session=Depends(get_db)):
+def update_course(id:int,updated_course:schemas.CourseCreate,db: Session=Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
     course_query = db.query(models.Course).filter(models.Course.id == id)
     course = course_query.first()
     if not course:

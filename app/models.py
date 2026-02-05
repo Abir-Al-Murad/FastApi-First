@@ -1,6 +1,5 @@
 from sqlalchemy import Column,Integer,String,Float,TIMESTAMP,text
-from . database import Base
-
+from . database import Base  #importing Base from database.py file to create model class cz Declarative_base() holo shokol model class er parent class. eta chara sqlalchemy bujhe na konta table.
 class Course(Base):
     __tablename__ = "courses"
     id = Column(Integer, primary_key = True,index = True)

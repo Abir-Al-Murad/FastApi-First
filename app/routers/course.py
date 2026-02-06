@@ -25,7 +25,7 @@ def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),curr
     #     duration = course.duration,
     #     website = str(course.website),   #HTTP ache but string kore nite hobe, otherwise erro ashbe
     # )
-    new_course = models.Course(**course.model_dump())
+    new_course = models.Course(**course.model_dump(),creator_id = current_user.id)
     new_course.website = str(new_course.website)
 
     db.add(new_course)

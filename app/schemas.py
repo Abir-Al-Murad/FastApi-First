@@ -30,7 +30,7 @@ class CourseCreate(BaseModel):
     
 class CourseResponse(CourseCreate):   #course field er shob field dekhabe plus id dekhabe
     id : int
-    
+    creator_id: int
     class Config:
         orm_mode = True
         

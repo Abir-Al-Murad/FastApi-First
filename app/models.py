@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,String,Float,TIMESTAMP,text
+from sqlalchemy import Column,Integer,String,Float,TIMESTAMP,text,ForeignKey
 from . database import Base  #importing Base from database.py file to create model class cz Declarative_base() holo shokol model class er parent class. eta chara sqlalchemy bujhe na konta table.
 class Course(Base):
     __tablename__ = "courses"
@@ -7,6 +7,7 @@ class Course(Base):
     instructor = Column(String,nullable= False)
     duration = Column(Float,nullable=False)
     website = Column(String,nullable=False)
+    creator_id = Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),nullable= False) #Cascade means user delete hole tar created course o delete hoye jabe
 
 class User(Base):
     __tablename__ = "users"

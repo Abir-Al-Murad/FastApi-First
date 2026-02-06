@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 # from pydantic import BaseModel,HttpUrl  #for data validation and data model
 from . routers import user,course,auth
+from . import models
+from . database import engine
 
+
+models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 # models.Base.metadata.create_all(bind=engine)

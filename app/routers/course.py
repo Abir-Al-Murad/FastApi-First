@@ -36,7 +36,8 @@ def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),curr
 
 @router.get("/",response_model= List[schemas.CourseResponse])
 def get_course(db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
-    course = db.query(models.Course).all()
+    # course = db.query(models.Course).all()
+    course = db.query(models.Course).filter(models.Course.creator_id == current_user.id).all()
     return course
 
 

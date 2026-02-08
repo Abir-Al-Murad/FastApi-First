@@ -1,4 +1,4 @@
-from typing import List
+from typing import List,Optional
 from fastapi import FastAPI,HTTPException,status,Response,Depends,APIRouter
 from sqlalchemy.orm import Session
 from .. import models,schemas
@@ -35,9 +35,9 @@ def create_course(course:schemas.CourseCreate,db: Session = Depends(get_db),curr
 
 
 @router.get("/",response_model= List[schemas.CourseResponse])
-def get_course(db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user)):
+def get_course(db: Session = Depends(get_db),current_user:models.User =Depends(oauth2.get_current_user),limit: int = 3,skip:int=0,search: Optional[str] = ""):
     # course = db.query(models.Course).all()
-    course = db.query(models.Course).filter(models.Course.creator_id == current_user.id).all()
+    course = db.query(models.Course).filter(models.Course.creator_id == current_user.id).filter(models.Course.name.contains(search)).limit(limit).offset(skip).all()
     return course
 
 
